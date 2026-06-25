@@ -33,7 +33,7 @@ dashboard_import:
 
 packages:
   remote_package:
-    url: https://github.com/ratgdo/esphome-ratgdo
+    url: https://github.com/zznyjidi/esphome-ratgdo-c6
     ref: main
     files: [base_drycontact.yaml]
     refresh: 1s
@@ -149,6 +149,6 @@ sensor:
     attenuation: auto
     update_interval: 60s
     filters:
-    - calibrate_linear:
-        - 1.16 -> 5
-        - 2.783 -> 12
+      - calibrate_linear:
+          - 1.16 -> 5
+          - 2.783 -> 12

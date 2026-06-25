@@ -34,7 +34,7 @@ dashboard_import:
 
 packages:
   remote_package:
-    url: https://github.com/ratgdo/esphome-ratgdo
+    url: https://github.com/zznyjidi/esphome-ratgdo-c6
     ref: main
     files: [base.yaml]
     refresh: 1s
@@ -153,9 +153,9 @@ sensor:
     attenuation: auto
     update_interval: 60s
     filters:
-    - calibrate_linear:
-        - 1.16 -> 5
-        - 2.783 -> 12
+      - calibrate_linear:
+          - 1.16 -> 5
+          - 2.783 -> 12
     # uncomment to convert voltage scale to a % for lead acid batteries
     #     - 2.43 -> 0   # 10.5v = 0%
     #     - 2.98 -> 100 # 12.85 = 100%

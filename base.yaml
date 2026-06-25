@@ -83,10 +83,6 @@ binary_sensor:
     id: ${id_prefix}_obstruction
     name: "Obstruction"
     device_class: problem
-    on_press:
-      - switch.turn_on: ${id_prefix}_status_obstruction
-    on_release:
-      - switch.turn_off: ${id_prefix}_status_obstruction
   - platform: ratgdo
     type: button
     id: ${id_prefix}_button
@@ -134,10 +130,6 @@ cover:
     id: ${id_prefix}_garage_door
     device_class: garage
     name: "Door"
-    on_closed:
-      - switch.turn_off: ${id_prefix}_status_door
-    on_opened:
-      - switch.turn_on: ${id_prefix}_status_door
 
 light:
   - platform: ratgdo

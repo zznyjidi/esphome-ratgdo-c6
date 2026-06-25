@@ -44,12 +44,6 @@ api:
         - lambda: !lambda |-
             id($id_prefix).clear_paired_devices(devices_to_wipe);
 
-ota:
-  - platform: esphome
-    id: ${id_prefix}_ratgdo_ota
-  - platform: web_server
-    id: ${id_prefix}_ratgdo_ota_ws
-
 sensor:
   - platform: ratgdo
     id: ${id_prefix}_openings
@@ -71,24 +65,6 @@ lock:
     name: "Lock remotes"
 
 switch:
-  - platform: gpio
-    id: "${id_prefix}_status_door"
-    internal: true
-    pin:
-      number: ${status_door_pin} # output door status, HIGH for open, LOW for closed
-      mode:
-        output: true
-    name: "Status door"
-    entity_category: diagnostic
-  - platform: gpio
-    id: "${id_prefix}_status_obstruction"
-    internal: true
-    pin:
-      number: ${status_obstruction_pin} # output for obstruction status, HIGH for obstructed, LOW for clear
-      mode:
-        output: true
-    name: "Status obstruction"
-    entity_category: diagnostic
   - platform: ratgdo
     id: "${id_prefix}_learn"
     type: learn
@@ -122,76 +98,6 @@ binary_sensor:
     name: "Motor"
     device_class: running
     entity_category: diagnostic
-  - platform: gpio
-    id: "${id_prefix}_dry_contact_open"
-    pin:
-      number: ${dry_contact_open_pin} # dry contact for opening door
-      inverted: true
-      mode:
-        input: true
-        pullup: true
-    name: "Dry contact open"
-    entity_category: diagnostic
-    filters:
-      - delayed_on_off: 500ms
-    on_press:
-      then:
-        script.execute: "${id_prefix}_dry_contact_door_control"
-  - platform: gpio
-    id: "${id_prefix}_dry_contact_close"
-    pin:
-      number: ${dry_contact_close_pin} # dry contact for closing door
-      inverted: true
-      mode:
-        input: true
-        pullup: true
-    name: "Dry contact close"
-    entity_category: diagnostic
-    filters:
-      - delayed_on_off: 500ms
-    on_press:
-      then:
-        script.execute: "${id_prefix}_dry_contact_door_control"
-  - platform: gpio
-    id: "${id_prefix}_dry_contact_light"
-    pin:
-      number: ${dry_contact_light_pin} # dry contact for triggering light (no discrete light commands, so toggle only)
-      inverted: true
-      mode:
-        input: true
-        pullup: true
-    name: "Dry contact light"
-    entity_category: diagnostic
-    filters:
-      - delayed_on_off: 500ms
-    on_press:
-      - light.toggle: ${id_prefix}_light
-
-script:
-  - id: "${id_prefix}_dry_contact_door_control"
-    then:
-      - delay: 0.1s
-      - if:
-          condition:
-            and:
-              - binary_sensor.is_on: ${id_prefix}_dry_contact_close
-              - binary_sensor.is_on: ${id_prefix}_dry_contact_open
-          then:
-            - cover.toggle: ${id_prefix}_garage_door
-      - if:
-          condition:
-            and:
-              - binary_sensor.is_off: ${id_prefix}_dry_contact_close
-              - binary_sensor.is_on: ${id_prefix}_dry_contact_open
-          then:
-            - cover.open: ${id_prefix}_garage_door
-      - if:
-          condition:
-            and:
-              - binary_sensor.is_on: ${id_prefix}_dry_contact_close
-              - binary_sensor.is_off: ${id_prefix}_dry_contact_open
-          then:
-            - cover.close: ${id_prefix}_garage_door
 
 number:
   - platform: ratgdo
